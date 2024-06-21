@@ -6,7 +6,9 @@ const createUserIntoDB = async (payload: TUser) => {
   const hashedPassword = await bcrypt.hash(payload.password, 10);
   payload.password = hashedPassword;
   const result = await UserModel.create(payload);
-  return result;
+
+  const { password, ...userWithoutPassword } = result.toObject();
+  return userWithoutPassword;
 };
 
 export const UserServices = {

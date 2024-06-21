@@ -5,7 +5,7 @@ import { USER_ROLE } from '../user/user.constant';
 
 const router = express.Router();
 router.post('/booking', auth(USER_ROLE.user), BookingController.createBooking);
-router.get('/booking', BookingController.getAllBookings);
+router.get('/booking', auth(USER_ROLE.admin), BookingController.getAllBookings);
 router.get(
   '/my-bookings',
   auth(USER_ROLE.user),

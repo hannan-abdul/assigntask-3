@@ -15,11 +15,7 @@ router.put(
   auth(USER_ROLE.admin),
   ServiceController.updateService,
 );
-router.get(
-  '/services',
-  auth(USER_ROLE.admin),
-  ServiceController.getAllServices,
-);
+router.get('/services', ServiceController.getAllServices);
 router.delete(
   '/services/:id',
   auth(USER_ROLE.admin),

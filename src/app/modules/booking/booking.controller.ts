@@ -1,4 +1,3 @@
-import { Response } from 'express';
 import { Request, Response } from 'express';
 import catchAsync from '../../utils/catchAsync';
 import { BookingService } from './booking.service';
@@ -31,7 +30,6 @@ const createBooking = catchAsync(
       manufacturingYear,
       registrationPlate,
     };
-    console.log(customer);
 
     const result = await BookingService.createBookingIntoDB(bookingData);
 
@@ -64,8 +62,6 @@ const getUserBookings = catchAsync(
       const { customer, ...bookingWithoutCustomer } = booking.toObject();
       return bookingWithoutCustomer;
     });
-    // const customerId = req.userId;
-    // const result = await BookingService.getBookingsByUser(customerId);
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
@@ -74,23 +70,6 @@ const getUserBookings = catchAsync(
     });
   },
 );
-
-// const getAllBookings = async (req: Request, res: Response) => {
-//   try {
-//     const result = await BookingService.getAllBookingFromDB();
-//     res.status(200).json({
-//       success: true,
-//       message: 'All Booking retrieved successfully',
-//       date: result,
-//     });
-//   } catch (err: any) {
-//     res.status(500).json({
-//       success: false,
-//       message: err.message || 'Something went wrong',
-//       error: err,
-//     });
-//   }
-// };
 
 export const BookingController = {
   createBooking,

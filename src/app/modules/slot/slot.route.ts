@@ -1,20 +1,15 @@
 import express from 'express';
 import { SlotController } from './slot.controller';
+import auth from '../../middlewares/auth';
+import { USER_ROLE } from '../user/user.constant';
 
 const router = express.Router();
-router.post('/services/slots', SlotController.createSlot);
-// router.get('/services/:id', ServiceController.getSingleService);
-// router.put(
-//   '/services/:id',
-//   auth(USER_ROLE.admin),
-//   ServiceController.updateService,
-// );
-router.get('/slots/availability', SlotController.getAvailableSlot);
-router.get('/slots/availabilityquery', SlotController.getAvailableSlotbyquery);
-// router.delete(
-//   '/services/:id',
-//   auth(USER_ROLE.admin),
-//   ServiceController.deleteService,
-// );
+router.post(
+  '/services/slots',
+  auth(USER_ROLE.admin),
+  SlotController.createSlot,
+);
+// router.get('/slots/availability', SlotController.getAvailableSlot);
+router.get('/slots/availability', SlotController.getAvailableSlotbyquery);
 
 export const SlotRoutes = router;

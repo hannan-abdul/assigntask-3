@@ -28,24 +28,24 @@ const createSlotIntoDB = async (payload: TSlot) => {
   return result;
 };
 
-const getAvailableSlots = async () => {
-  const result = await SlotModel.find().populate('service');
-  return result;
-};
+// const getAvailableSlots = async () => {
+//   const result = await SlotModel.find().populate('service');
+//   return result;
+// };
 
-const getSlotsByDateAndService = async (date: string, service: string) => {
-  const result = await SlotModel.find({
-    date,
-    service,
-    isBooked: 'available',
-  }).populate('service');
+const getSlotsByDateAndService = async (date?: string, service?: string) => {
+  const filter: any = { isBooked: 'available' };
+  if (date) filter.date = date;
+  if (service) filter.service = service;
+
+  const result = await SlotModel.find(filter).populate('service');
 
   return result;
 };
 
 export const SlotServices = {
   createSlotIntoDB,
-  getAvailableSlots,
+  // getAvailableSlots,
   getSlotsByDateAndService,
 };
 

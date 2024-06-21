@@ -15,15 +15,15 @@ const createSlot = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-const getAvailableSlot = catchAsync(async (req: Request, res: Response) => {
-  const result = await SlotServices.getAvailableSlots();
+// const getAvailableSlot = catchAsync(async (req: Request, res: Response) => {
+//   const result = await SlotServices.getAvailableSlots();
 
-  res.status(200).json({
-    success: true,
-    message: 'Available Slots retrieved successfully',
-    date: result,
-  });
-});
+//   res.status(200).json({
+//     success: true,
+//     message: 'Available Slots retrieved successfully',
+//     date: result,
+//   });
+// });
 
 const getAvailableSlotbyquery = catchAsync(
   async (req: Request, res: Response) => {
@@ -45,5 +45,5 @@ const getAvailableSlotbyquery = catchAsync(
 export const SlotController = {
   createSlot,
   getAvailableSlotbyquery,
-  getAvailableSlot,
+  // getAvailableSlot,
 };
