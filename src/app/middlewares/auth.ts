@@ -6,52 +6,46 @@ import httpStatus from 'http-status';
 import config from '../config';
 import { TUserRole } from '../modules/user/user.interface';
 
-interface AuthenticatedRequest extends Request {
-  userId?: string;
-  user?: JwtPayload;
-}
+// interface AuthenticatedRequest extends Request {
+//   userId?: string;
+//   user?: JwtPayload;
+// }
 
 const auth = (...requiredRoles: TUserRole[]) => {
-  return catchAsync(
-    async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-      const authHeader = req.headers.authorization;
+  return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const authHeader = req.headers.authorization;
 
-      if (!authHeader || !authHeader.startsWith('Bearer ')) {
-        throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized');
-      }
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+    }
 
-      const token = authHeader.split(' ')[1];
+    const token = authHeader.split(' ')[1];
 
-      jwt.verify(
-        token,
-        config.jwt_access_secret as string,
-        function (err, decoded) {
-          if (err) {
-            throw new AppError(
-              httpStatus.UNAUTHORIZED,
-              'You are not authorized',
-            );
-          }
-          const role = (decoded as JwtPayload).role;
-          const userId = (decoded as JwtPayload).userId;
-          //   console.log(decoded);
+    jwt.verify(
+      token,
+      config.jwt_access_secret as string,
+      function (err, decoded) {
+        if (err) {
+          throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+        }
+        const role = (decoded as JwtPayload).role;
+        const userId = (decoded as JwtPayload).userId as string;
+        //   console.log(decoded);
 
-          if (requiredRoles && !requiredRoles.includes(role)) {
-            throw new AppError(
-              httpStatus.UNAUTHORIZED,
-              'You are not authorized!',
-            );
-          }
+        if (requiredRoles && !requiredRoles.includes(role)) {
+          throw new AppError(
+            httpStatus.UNAUTHORIZED,
+            'You are not authorized!',
+          );
+        }
 
-          req.user = decoded as JwtPayload;
-          req.userId = userId; // Assuming the user ID is stored in the `sub` field
-          //   console.log('user id', req.userId);
+        req.user = decoded as JwtPayload;
+        req.userId = userId; // Assuming the user ID is stored in the `sub` field
 
-          next();
-        },
-      );
-    },
-  );
+        next();
+      },
+    );
+  });
 };
 
 export default auth;
